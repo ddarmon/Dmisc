@@ -1,0 +1,11 @@
+Package: Dmisc
+Title: Miscellaneous Functions David Darmon Finds Useful
+Version: 0.0.0.9000
+Authors@R: 
+    person("David", "Darmon", , "david.m.darmon@gmail.com", role = c("aut", "cre"))
+Description: A collection of miscellaneous functions that David Darmon finds useful.
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
