@@ -20,10 +20,10 @@
 #' #>   -d '{"a":1,"b":2}' \
 #' #>   "https://httpbin.org/post"'
 #' }
-#'  
-#'  @import httr2
-#'  
-#'  @export
+#' 
+#' @import httr2
+#' 
+#' @export
 req_to_curl <- function(req) {
   # Start building the curl command
   curl_cmd <- "curl -X POST"

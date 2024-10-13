@@ -29,8 +29,5 @@ req_to_curl(req) |>
 #>   -d '{"a":1,"b":2}' \
 #>   "https://httpbin.org/post"'
 }
- 
- @import httr2
- 
- @export
+
 }
