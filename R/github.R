@@ -5,7 +5,7 @@
 #' individual files and entire directories. When downloading a directory, it 
 #' recursively downloads all files while maintaining the original folder structure.
 #' The GitHub API is accessed using an authentication token, which should be stored 
-#' in your environment as `GITHUB_TOKEN`.
+#' in your environment as `GITHUB_TOKEN` or `GITHUB_PAT`.
 #'
 #' @param repo_owner Character. The GitHub username or organization name that owns the repository.
 #' @param repo_name Character. The name of the GitHub repository.
@@ -42,6 +42,15 @@
 #' @import httr2
 #' @export
 download_github_content <- function(repo_owner, repo_name, file_path, branch, output_dir) {
+  # Retrieve GitHub token from environment variables: GITHUB_TOKEN or GITHUB_PAT
+  auth_token <- Sys.getenv("GITHUB_TOKEN")
+  if (auth_token == "") {
+    auth_token <- Sys.getenv("GITHUB_PAT")
+  }
+  if (auth_token == "") {
+    stop("No GitHub authentication token found. Please set either GITHUB_TOKEN or GITHUB_PAT in your environment.")
+  }
+  
   # Construct base API URL
   base_url <- paste0("https://api.github.com/repos/", repo_owner, "/", repo_name, "/contents/", file_path)
   
@@ -53,7 +62,7 @@ download_github_content <- function(repo_owner, repo_name, file_path, branch, ou
   # Make initial request to check if path is file or directory
   contents_req <- request(base_url) %>%
     req_headers(
-      Authorization = paste("token", Sys.getenv("GITHUB_TOKEN")),
+      Authorization = paste("token", auth_token),
       Accept = "application/json"
     )
   
@@ -86,7 +95,7 @@ download_github_content <- function(repo_owner, repo_name, file_path, branch, ou
         
         raw_req <- request(item$download_url) %>%
           req_headers(
-            Authorization = paste("token", Sys.getenv("GITHUB_TOKEN")),
+            Authorization = paste("token", auth_token),
             Accept = "application/vnd.github.v3.raw"
           )
         
@@ -120,7 +129,7 @@ download_github_content <- function(repo_owner, repo_name, file_path, branch, ou
     
     raw_req <- request(contents$download_url) %>%
       req_headers(
-        Authorization = paste("token", Sys.getenv("GITHUB_TOKEN")),
+        Authorization = paste("token", auth_token),
         Accept = "application/vnd.github.v3.raw"
       )
     
